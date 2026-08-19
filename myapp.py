@@ -40,3 +40,35 @@ with tab2:
     st.subheader(':gray[Bottom Rows]')
     bottomrows=st.slider('Number of Last few Rows',1,data.shape[0],key="bottomslider")
     st.dataframe(data.tail(bottomrows))
+with tab3:
+    st.subheader(':gray[Data Types]')
+    st.dataframe(data.types)
+with tab4:
+    st.subheader(':gray[Columns In Dataset]')
+    st.dataframe(list(data.columns))
+    #if not in dataframe then st.write(list(data.columns))
+
+#visual Representation in the form of bar chart , line graph and bar chart
+st.subheader(':rainbow[Data Visualization]',divider='gray')
+with st.expander('Value Count'):
+ cols1,cols2=st.columns(2)
+ with cols1:
+     column=st.selectbox('Choose Column Name',options=list(data.column))
+ with cols2:
+     toprows=st.number_input('Top_Rows',min_value=1,step=1)
+     
+count=st.button('Count')
+if(count==True):
+    result=data[column].value_counts().reset_index().head(toprows)
+    st.dataframe(result)
+    st.subheader('Visulaization',divider='gray')
+    fig=px.bar(data_frame=result,x=column,y='count',text='count')
+    st.plotly_chart(fig)
+    fig=px.line(data_frame=result,x=column,y='count',text='count')
+    st.plotly_chart(fig)
+    fig=px.pie(data_frame=result,names=column,values='count')
+    st.plotly_chart(fig)
+
+
+
+
