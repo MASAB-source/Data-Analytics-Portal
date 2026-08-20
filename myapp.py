@@ -69,6 +69,49 @@ if(count==True):
     fig=px.pie(data_frame=result,names=column,values='count')
     st.plotly_chart(fig)
 
+#Group By 
+# Group By
+st.subheader(':rainbow[lets Have More detailed analysis]', divider='rainbow')
+st.write('Categories Data')
+
+with st.expander('Group By your columns'):
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        group_by = st.multiselect("Select the category to groupby", options=list(data.columns))
+    with col2:
+        operation_col = st.selectbox('Select column for operation', options=list(data.columns))
+    with col3:
+        operation = st.selectbox('Select operation', options=['sum', 'max', 'mean', 'min'])
+    
+    # Check that both group_by and operation_col are selected
+    if group_by and operation_col:
+        # Perform aggregation
+        result = data.groupby(group_by).agg(
+            newcol=(operation_col, operation)
+        ).reset_index()
+        
+        st.dataframe(result)
+        st.subheader('Visualization', divider='gray')
+        
+        # Use the first selected group_by column for the X-axis / categories
+        x_axis = group_by[0]
+        
+        # Bar Chart
+        fig_bar = px.bar(data_frame=result, x=x_axis, y='newcol', text='newcol', labels={'newcol': f'{operation.upper()} of {operation_col}'})
+        st.plotly_chart(fig_bar, use_container_width=True)
+        
+        # Line Chart
+        fig_line = px.line(data_frame=result, x=x_axis, y='newcol', text='newcol', labels={'newcol': f'{operation.upper()} of {operation_col}'})
+        st.plotly_chart(fig_line, use_container_width=True)
+        
+        # Pie Chart
+        fig_pie = px.pie(data_frame=result, names=x_axis, values='newcol', labels={'newcol': f'{operation.upper()} of {operation_col}'})
+        st.plotly_chart(fig_pie, use_container_width=True)
+
+    
+
+
 
 
 
