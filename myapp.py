@@ -109,6 +109,41 @@ with st.expander('Group By your columns'):
         fig_pie = px.pie(data_frame=result, names=x_axis, values='newcol', labels={'newcol': f'{operation.upper()} of {operation_col}'})
         st.plotly_chart(fig_pie, use_container_width=True)
 
+        #Data Visalization
+        st.subheader(':gray[Data visualization]',divider='gray')
+        graph=st.selectbox('Choose a graph',options=['line','bar','scatter','pie','sunburst'])
+        if(graph=='line'):
+            x_axis=st.selectbox('Choose x asis',options=list(result.columns))
+            y_axis=st.selectbox('Choose y asis',options=list(result.columns))
+            color=st.selectbox('Chose a color',options=[None]+list(result.columns))
+            fig=px.line(data_frame=result,x=x_axis,y=y_axis,color=color,markers='o')
+            st.plotly_chart(fig)
+        elif(graph=='bar'):
+             x_axis=st.selectbox('Choose x asis',options=list(result.columns))
+             y_axis=st.selectbox('Choose y asis',options=list(result.columns))
+             color=st.selectbox('Chose a color',options=[None]+list(result.columns))
+             facet_col=st.selectbox('Column Information',option=[None]+list(result.columns))
+             fig=px.bar(data_frame=result,x=x_axis,y=y_axis,color=color,facet_col=facet_col,barmode='group')
+             st.plotly_chart(fig)
+        elif(graph=='scatter'):
+             x_axis=st.selectbox('Choose x asis',options=list(result.columns))
+             y_axis=st.selectbox('Choose y asis',options=list(result.columns))
+             color=st.selectbox('Chose a color',options=[None]+list(result.columns))
+             size=st.selectbox('Choose Size',option=[None]+list(result.columns))
+             fig=px.bar(data_frame=result,x=x_axis,y=y_axis,color=color,size=size)
+             st.plotly_chart(fig)
+        elif(graph=='pie'):
+            values=st.selectbox('Choose Numerical Value',options=list(result.columns))
+            names=st.selectbox('Choose Labels',options=list(result.columns))
+            fig=px.pie(data_frame=result,names=names,values=values)
+            st.plotly_chart(fig)
+        elif(graph=='sunburst'):
+            path=st.multiselect('Choose an option',options=list(result.columns))
+            fig=px.sunburst(data_frame=result,path=path,values='new col')
+            st.plotly_chart(fig)
+
+                        
+
     
 
 
