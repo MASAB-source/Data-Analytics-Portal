@@ -5,7 +5,7 @@ import plotly.express as px
 
 #for page configuration
 st.set_page_config(
-    page_title="Analytics Application",
+    page_title="Analytic Application",
     page_icon="🔍"
 )
 #tile
